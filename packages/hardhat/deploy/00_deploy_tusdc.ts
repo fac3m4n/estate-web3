@@ -34,7 +34,7 @@ const deployTusdc: DeployFunction = async function (hre: HardhatRuntimeEnvironme
 
   // Get the deployed contract to interact with it after deploying.
   const tusdc = await hre.ethers.getContract<Contract>("tUSDC", deployer);
-  console.log("👋 Initial greeting:", await tusdc.balanceOf(deployer));
+  console.log("👋 Initial balance:", await tusdc.balanceOf(deployer));
 };
 
 export default deployTusdc;

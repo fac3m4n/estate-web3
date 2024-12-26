@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract TUSDC is ERC20, Ownable, Pausable {
+contract tUSDC is ERC20, Ownable, Pausable {
     uint8 private _decimals = 6; // USDC uses 6 decimals
 
     // Faucet configuration
