@@ -1357,8 +1357,7 @@ const deployedContracts = {
         renounceRole: "@openzeppelin/contracts/access/AccessControl.sol",
         revokeRole: "@openzeppelin/contracts/access/AccessControl.sol",
         supportsInterface: "@openzeppelin/contracts/access/AccessControl.sol",
-        onERC721Received:
-          "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+        onERC721Received: "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       },
     },
     PropertyNFT: {
@@ -2670,55 +2669,32 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        owner:
-          "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        renounceOwnership:
-          "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        transferOwnership:
-          "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        approve:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        balanceOf:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        getApproved:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        isApprovedForAll:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        owner: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        renounceOwnership: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        transferOwnership: "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        approve: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        balanceOf: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        getApproved: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        isApprovedForAll: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
         name: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        ownerOf:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        safeTransferFrom:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        setApprovalForAll:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        supportsInterface:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        symbol:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        tokenURI:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        transferFrom:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        tokenByIndex:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol",
+        ownerOf: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        safeTransferFrom: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        setApprovalForAll: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        supportsInterface: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        symbol: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        tokenURI: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        transferFrom: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        tokenByIndex: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol",
         tokenOfOwnerByIndex:
           "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol",
-        totalSupply:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol",
-        paused:
-          "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
-        DEFAULT_ADMIN_ROLE:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        getRoleAdmin:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        grantRole:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        hasRole:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        renounceRole:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
-        revokeRole:
-          "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        totalSupply: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol",
+        paused: "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol",
+        DEFAULT_ADMIN_ROLE: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        getRoleAdmin: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        grantRole: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        hasRole: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        renounceRole: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
+        revokeRole: "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol",
       },
     },
     tUSDC: {
