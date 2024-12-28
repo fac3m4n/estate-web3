@@ -25,12 +25,12 @@ interface IMarketplace {
  */
 contract PropertyNFT is
     Initializable,
+    OwnableUpgradeable,
     ERC721Upgradeable,
     ERC721EnumerableUpgradeable,
     ERC721URIStorageUpgradeable,
     ERC721PausableUpgradeable,
-    AccessControlUpgradeable,
-    Ownable
+    AccessControlUpgradeable
 {
     // Marketplace contract interfaces for regular and fractional properties
     IMarketplace public marketplace;
@@ -236,7 +236,7 @@ contract PropertyNFT is
     }
 
     function setMarketplaceAddress(address _marketAddress) external onlyOwner {
-        marketplace = Imarketplace(_marketAddress);
+        marketplace = IMarketplace(_marketAddress);
     }
 
     function setFractionalMarketplace(address _marketAddress) external onlyOwner {
