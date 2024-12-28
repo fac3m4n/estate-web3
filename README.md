@@ -14,10 +14,11 @@ A decentralized real estate platform built on Arbitrum that enables property lis
 
 ## Tech Stack 💻
 
-- **Frontend**: Next.js 14, TypeScript, TailwindCSS, DaisyUI
+- **Frontend**: Next.js 14, TypeScript, TailwindCSS, DaisyUI, Google Maps API
 - **Blockchain**: Hardhat, Arbitrum, Solidity
 - **Web3 Integration**: Wagmi, Viem, RainbowKit
 - **File Storage**: Pinata IPFS
+- **Database**: MongoDB, Prisma
 - **Development Tools**: Yarn, Prettier, ESLint
 
 ## Contracts 📜
