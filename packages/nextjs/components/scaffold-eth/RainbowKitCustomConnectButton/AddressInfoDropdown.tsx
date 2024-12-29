@@ -5,7 +5,7 @@ import { getAddress } from "viem";
 import { Address } from "viem";
 import { useDisconnect } from "wagmi";
 import {
-  ArrowLeftOnRectangleIcon,
+  ArrowRightEndOnRectangleIcon,
   ArrowTopRightOnSquareIcon,
   ArrowsRightLeftIcon,
   CheckCircleIcon,
@@ -127,7 +127,7 @@ export const AddressInfoDropdown = ({
               type="button"
               onClick={() => disconnect()}
             >
-              <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Disconnect</span>
+              <ArrowRightEndOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Disconnect</span>
             </button>
           </li>
         </ul>
