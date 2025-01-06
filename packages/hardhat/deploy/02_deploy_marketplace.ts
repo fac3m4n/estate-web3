@@ -1,20 +1,25 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
-const deployMarketplace: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployMarketplaceProxy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("Marketplace", {
+  // Deploy implementation
+  const marketplace = await deploy("Marketplace", {
     from: deployer,
-    args: [],
+    proxy: {
+      proxyContract: "OpenZeppelinTransparentProxy",
+      execute: {
+        methodName: "initialize",
+        args: [],
+      },
+    },
     log: true,
-    autoMine: true,
   });
 
-  console.log("👋 Marketplace deployed successfully");
+  console.log(`Marketplace proxy deployed to: ${marketplace.address}`);
 };
 
-export default deployMarketplace;
-
-deployMarketplace.tags = ["Marketplace"];
+export default deployMarketplaceProxy;
+deployMarketplaceProxy.tags = ["Marketplace"];

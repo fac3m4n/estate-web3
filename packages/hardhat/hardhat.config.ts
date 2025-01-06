@@ -169,6 +169,16 @@ const config: HardhatUserConfig = {
       url: "https://alfajores-forno.celo-testnet.org",
       accounts: [deployerPrivateKey],
     },
+    bsctestnet: {
+      url: "https://bsc-testnet-dataseed.bnbchain.org",
+      accounts: [deployerPrivateKey],
+      verify: {
+        etherscan: {
+          apiUrl: "https://api-testnet.bscscan.com",
+          apiKey: "JI5N1XM7GJUCB5EXSUX333JTDS4DTZMIUH",
+        },
+      },
+    },
   },
   // configuration for harhdat-verify plugin
   etherscan: {

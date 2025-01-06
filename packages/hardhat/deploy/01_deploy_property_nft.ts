@@ -1,22 +1,25 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 
-const deployPropertyNFT: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployPropertyNFTProxy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("PropertyNFT", {
+  // Deploy implementation
+  const propertyNFT = await deploy("PropertyNFT", {
     from: deployer,
-    args: [],
+    proxy: {
+      proxyContract: "OpenZeppelinTransparentProxy",
+      execute: {
+        methodName: "initialize",
+        args: [],
+      },
+    },
     log: true,
-    autoMine: true,
   });
 
-  const propertyNFT = await hre.ethers.getContract<Contract>("PropertyNFT", deployer);
-  console.log("👋 Initial balance:", await propertyNFT.balanceOf(deployer));
+  console.log(`PropertyNFT proxy deployed to: ${propertyNFT.address}`);
 };
 
-export default deployPropertyNFT;
-
-deployPropertyNFT.tags = ["PropertyNFT"];
+export default deployPropertyNFTProxy;
+deployPropertyNFTProxy.tags = ["PropertyNFT"];

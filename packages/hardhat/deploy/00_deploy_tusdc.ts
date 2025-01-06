@@ -30,6 +30,14 @@ const deployTusdc: DeployFunction = async function (hre: HardhatRuntimeEnvironme
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
+    proxy: {
+      proxyContract: "OpenZeppelinTransparentProxy",
+      viaAdminContract: "ProxyAdmin",
+      execute: {
+        methodName: "initialize",
+        args: [],
+      },
+    },
   });
 
   // Get the deployed contract to interact with it after deploying.
