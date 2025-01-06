@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   421614: {
     Marketplace: {
-      address: "0x6B35c779322f4B908cc1FFA025f1D5D33F6A6a2e",
+      address: "0x6C39BF19904e3E502001101d6c072985F3689172",
       abi: [
         {
           inputs: [],
@@ -1362,7 +1362,7 @@ const deployedContracts = {
       },
     },
     MarketplaceFractional: {
-      address: "0xdad42743936555f54D3DE15b5374a7cb99EDe8F7",
+      address: "0x77568462f078518bF18c6C372eEE281605dbF476",
       abi: [
         {
           inputs: [],
@@ -2236,7 +2236,7 @@ const deployedContracts = {
       },
     },
     PropertyNFT: {
-      address: "0x51ee6DEf15c612A5492c692015f53b122881dd3f",
+      address: "0x3539e935e1e1878F0607B0350cCe8A33DD3c5d62",
       abi: [
         {
           inputs: [],
@@ -3596,7 +3596,7 @@ const deployedContracts = {
       },
     },
     tUSDC: {
-      address: "0xa58f3728fe09668a5577fb6648C0Ae7Ec3602839",
+      address: "0xC08a16B2cfe9644e1092B95c697d32126Eea4fF0",
       abi: [
         {
           inputs: [],
