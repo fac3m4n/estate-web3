@@ -11,6 +11,7 @@ import "hardhat-deploy";
 import "hardhat-deploy-ethers";
 import { task } from "hardhat/config";
 import generateTsAbis from "./scripts/generateTsAbis";
+import "@openzeppelin/hardhat-upgrades";
 
 // If not set, it uses ours Alchemy's default API key.
 // You can get your own at https://dashboard.alchemyapi.io
@@ -71,6 +72,8 @@ const config: HardhatUserConfig = {
     arbitrumSepolia: {
       url: `https://arb-sepolia.g.alchemy.com/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
+      gasPrice: "auto",
+      gasMultiplier: 1.2,
       verify: {
         etherscan: {
           apiUrl: "https://api-sepolia.arbiscan.io",
@@ -179,6 +182,13 @@ const config: HardhatUserConfig = {
   },
   sourcify: {
     enabled: false,
+  },
+  gasReporter: {
+    enabled: true,
+    currency: "USD",
+    noColors: true,
+    L2: "arbitrum",
+    L2Etherscan: arbiscanApiKey,
   },
 };
 
