@@ -33,14 +33,14 @@ export const menuLinks: HeaderMenuLink[] = [
 
 export const rightMenuLinks: HeaderMenuLink[] = [
   {
-    label: "List Property",
-    href: "/list-property",
-    icon: <PlusCircleIcon className="h-4 w-4" />,
-  },
-  {
     label: "My Properties",
     href: "/my-properties",
     icon: <HomeModernIcon className="h-4 w-4" />,
+  },
+  {
+    label: "List Property",
+    href: "/list-property",
+    icon: <PlusCircleIcon className="h-4 w-4" />,
   },
 ];
 
