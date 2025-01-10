@@ -8,13 +8,13 @@ const deployMarketplaceProxy: DeployFunction = async function (hre: HardhatRunti
   // Deploy implementation
   const marketplace = await deploy("Marketplace", {
     from: deployer,
-    proxy: {
-      proxyContract: "OpenZeppelinTransparentProxy",
-      execute: {
-        methodName: "initialize",
-        args: [],
-      },
-    },
+    // proxy: {
+    //   proxyContract: "OpenZeppelinTransparentProxy",
+    //   execute: {
+    //     methodName: "initialize",
+    //     args: [],
+    //   },
+    // },
     log: true,
   });
 

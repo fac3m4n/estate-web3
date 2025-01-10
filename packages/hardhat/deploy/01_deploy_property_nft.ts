@@ -8,13 +8,13 @@ const deployPropertyNFTProxy: DeployFunction = async function (hre: HardhatRunti
   // Deploy implementation
   const propertyNFT = await deploy("PropertyNFT", {
     from: deployer,
-    proxy: {
-      proxyContract: "OpenZeppelinTransparentProxy",
-      execute: {
-        methodName: "initialize",
-        args: [],
-      },
-    },
+    // proxy: {
+    //   proxyContract: "OpenZeppelinTransparentProxy",
+    //   execute: {
+    //     methodName: "initialize",
+    //     args: [],
+    //   },
+    // },
     log: true,
   });
 
