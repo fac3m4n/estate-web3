@@ -42,15 +42,10 @@ contract PropertyNFT is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     // Enum to define different types of properties
-    enum PropertyType {
-        UNDEFINED,
-        APARTMENT,
-        HOUSE
-    }
 
     // Structure to store property characteristics
     struct Feature {
-        PropertyType propertyType;
+        uint256 propertyType; // 1= appartment, 2= house
         string physicalAddress;
         uint256 rooms;
         uint256 bathrooms;
@@ -106,7 +101,7 @@ contract PropertyNFT is
     function createProperty(
         uint256 price,
         bool canBid,
-        PropertyType propertyType,
+        uint256 propertyType,
         string memory physicalAddress,
         uint256 rooms,
         uint256 bathrooms,
@@ -125,7 +120,7 @@ contract PropertyNFT is
      */
     function createPropertyShared(
         uint256 price,
-        PropertyType propertyType,
+        uint256 propertyType,
         string memory physicalAddress,
         uint256 rooms,
         uint256 bathrooms,
