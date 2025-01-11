@@ -2443,6 +2443,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ~5.40.0
     "@uniswap/sdk-core": ~5.8.2
     "@uniswap/v2-sdk": ~4.6.1
+    "@vis.gl/react-google-maps": ^1.5.0
     abitype: 1.0.6
     autoprefixer: ~10.4.20
     blo: ~1.2.0
@@ -2452,6 +2453,7 @@ __metadata:
     eslint-config-next: ~14.2.15
     eslint-config-prettier: ~8.10.0
     eslint-plugin-prettier: ~5.2.1
+    lucide-react: ^0.471.0
     next: ~14.2.11
     next-nprogress-bar: ~2.3.13
     next-themes: ~0.3.0
@@ -2998,7 +3000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/google.maps@npm:^3.58.1":
+"@types/google.maps@npm:^3.54.10, @types/google.maps@npm:^3.58.1":
   version: 3.58.1
   resolution: "@types/google.maps@npm:3.58.1"
   checksum: 7ad5bd9566ffa0396485c432368e45c43e3fe1ecc2b89324f257a49d9abbe03dfe046a771d82ae1808fa0fb6e04e6ffca870c7f2295fef73a6015a678b067364
@@ -3841,6 +3843,19 @@ __metadata:
     json-schema-to-ts: 1.6.4
     ts-morph: 12.0.0
   checksum: aa69e98b31e5b0db416e4906a70ff7b9fe168146a1d9e67007a2e4514999f7ce0d02153b6314f0ea6fb3a7a0c2ccf841511d09873695e8623a4d95546461bfc9
+  languageName: node
+  linkType: hard
+
+"@vis.gl/react-google-maps@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@vis.gl/react-google-maps@npm:1.5.0"
+  dependencies:
+    "@types/google.maps": ^3.54.10
+    fast-deep-equal: ^3.1.3
+  peerDependencies:
+    react: ">=16.8.0 || ^19.0 || ^19.0.0-rc"
+    react-dom: ">=16.8.0 || ^19.0 || ^19.0.0-rc"
+  checksum: 1912928abfe7e7d62ee330de1c5801166d00b42127eaeeb498d6c2cee5cb97207bbe9e2410e9a2388c48da9fa5dc58b3b3899c53a1e72a1a8475367ceb4d3d85
   languageName: node
   linkType: hard
 
@@ -9937,6 +9952,15 @@ __metadata:
   version: 0.3.3
   resolution: "lru_map@npm:0.3.3"
   checksum: ca9dd43c65ed7a4f117c548028101c5b6855e10923ea9d1f635af53ad20c5868ff428c364d454a7b57fe391b89c704982275410c3c5099cca5aeee00d76e169a
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.471.0":
+  version: 0.471.0
+  resolution: "lucide-react@npm:0.471.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 005ea2ce0ce662ec8bd3f9df5158efc66587d010045e392da04fe319ae257a25f932c73b7d6a44b96af1b505a58fabfaf14eaf5b27ba71a3a8da61d69ffbc753
   languageName: node
   linkType: hard
 
