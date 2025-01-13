@@ -14,6 +14,9 @@ const nextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  images: {
+    domains: ["chocolate-tough-manatee-914.mypinata.cloud"],
+  },
 };
 
 module.exports = nextConfig;

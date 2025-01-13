@@ -1,5 +1,3 @@
-"use client";
-
 import { Loader } from "@googlemaps/js-api-loader";
 
 export class GeocodingService {
