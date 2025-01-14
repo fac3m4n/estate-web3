@@ -15,7 +15,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
     // State variables
     IERC721 public propertyNFT;
     address public taxReceiver; // Address to receive taxes
-    IERC20 public TUSDCtoken; // USDC token
+    IERC20 public TBUSDtoken; // BUSD token
     uint256 public taxFees; // Listing fees
     bool public isTax; // Tax switch
     uint256 public periodInMonth; // Installment period 60 months
@@ -62,7 +62,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         periodInMonth = 60; // 5 years = 60 months
         isTax = true;
         taxReceiver = 0xE1F317EfbC93d0E8C8F338F6f64973018eb9d4de;
-        TUSDCtoken = IERC20(0x77efF133ed48A27B04545F73A17348DA4fbDDf02);
+        TBUSDtoken = IERC20(0x77efF133ed48A27B04545F73A17348DA4fbDDf02);
         percentage_downPayment = 20;
         _grantRole(DEFAULT_ADMIN_ROLE, owner());
         _grantRole(LISTER_ROLE, owner());
@@ -75,18 +75,18 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(listing.price == _price, "buyProperty: Wrong price");
         require(listing.seller != address(0), "buyProperty: Item not listed on the marketplace");
         require(listing.seller != msg.sender, "buyProperty: You cannot buy a item that you listed");
-        require(TUSDCtoken.balanceOf(msg.sender) >= listing.price, "buyProperty:  USDC balance is insufficent");
+        require(TBUSDtoken.balanceOf(msg.sender) >= listing.price, "buyProperty:  BUSD balance is insufficent");
         if (isTax) {
             uint256 amountToTaxReceiver = (listing.price * taxFees) / 100;
             uint256 amountToSeller = listing.price - amountToTaxReceiver;
-            TUSDCtoken.transferFrom(msg.sender, taxReceiver, amountToTaxReceiver);
-            TUSDCtoken.transferFrom(msg.sender, listing.seller, amountToSeller);
+            TBUSDtoken.transferFrom(msg.sender, taxReceiver, amountToTaxReceiver);
+            TBUSDtoken.transferFrom(msg.sender, listing.seller, amountToSeller);
         } else {
-            TUSDCtoken.transferFrom(msg.sender, taxReceiver, listing.price);
+            TBUSDtoken.transferFrom(msg.sender, taxReceiver, listing.price);
         }
 
         if (listing.highestBidder != address(0)) {
-            TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+            TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         }
         propertyNFT.transferFrom(address(this), msg.sender, _tokenId);
         delete items[_tokenId];
@@ -95,7 +95,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
 
     // List property on the marketplace for users who have the property NFT
     function listProperty(uint256 _tokenId, uint256 _price, bool _canBid) external whenNotPaused {
-        require(_price < TUSDCtoken.totalSupply(), "listProperty: The price cannot exceed USDC total supply");
+        require(_price < TBUSDtoken.totalSupply(), "listProperty: The price cannot exceed BUSD total supply");
         require(propertyNFT.ownerOf(_tokenId) == msg.sender, "listProperty: You don't own this NFT property");
 
         propertyNFT.transferFrom(msg.sender, address(this), _tokenId);
@@ -106,7 +106,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
     // Create property listing for users who do not have the property NFT
     function createProperty(address lister, uint256 _tokenId, uint256 _price, bool _canBid) external whenNotPaused {
         require(hasRole(LISTER_ROLE, msg.sender), "createProperty: Caller do not have lister role");
-        //require(_price<=USDCtoken.totalSupply(), "CreateProperty: The price cannot exceed USDC total supply");
+        //require(_price<=BUSDtoken.totalSupply(), "CreateProperty: The price cannot exceed BUSD total supply");
 
         items[_tokenId] = MarketItem(lister, address(0), _price, block.timestamp, _canBid, address(0), 0);
         emit PropertyListed(lister, _tokenId, _price, _canBid);
@@ -115,7 +115,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
     // Update property price
     function updatePrice(uint256 _tokenId, uint256 _price) external whenNotPaused {
         MarketItem storage listing = items[_tokenId];
-        require(_price < TUSDCtoken.totalSupply(), "updatePrice: Price can not exceed USDC total supply");
+        require(_price < TBUSDtoken.totalSupply(), "updatePrice: Price can not exceed BUSD total supply");
         require(items[_tokenId].seller == msg.sender, "updatePrice: You don't own this property NFT in the Market");
         require(listing.buyer == address(0), "updatePrice: Property already bought");
         items[_tokenId].price = _price;
@@ -128,7 +128,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(items[_tokenId].seller == msg.sender, "cancelSelling: You don't own this nft in the Market");
         require(listing.buyer == address(0), "cancelSelling: Property already bought");
         if (listing.highestBidder != address(0)) {
-            TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+            TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         }
         propertyNFT.transferFrom(address(this), msg.sender, _tokenId);
         delete items[_tokenId];
@@ -144,9 +144,9 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(listing.seller != msg.sender, "placeBid: You cannot bid on your own listing");
 
         if (listing.highestBidder != address(0)) {
-            TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+            TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         }
-        TUSDCtoken.transferFrom(msg.sender, address(this), bidAmount);
+        TBUSDtoken.transferFrom(msg.sender, address(this), bidAmount);
         items[_tokenId].highestBidder = msg.sender;
         items[_tokenId].highestBid = bidAmount;
 
@@ -164,10 +164,10 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         if (isTax) {
             uint256 amountToTaxReceiver = (listing.highestBid * taxFees) / 100;
             uint256 amountToSeller = listing.highestBid - amountToTaxReceiver;
-            TUSDCtoken.transfer(taxReceiver, amountToTaxReceiver);
-            TUSDCtoken.transfer(msg.sender, amountToSeller);
+            TBUSDtoken.transfer(taxReceiver, amountToTaxReceiver);
+            TBUSDtoken.transfer(msg.sender, amountToSeller);
         } else {
-            TUSDCtoken.transfer(msg.sender, listing.highestBid);
+            TBUSDtoken.transfer(msg.sender, listing.highestBid);
         }
 
         delete items[_tokenId];
@@ -182,7 +182,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(listing.highestBidder != address(0), "rejectBid: No bids to reject");
         require(listing.seller == msg.sender, "rejectBid: You afre not the owner of this NFT on the marketplace");
 
-        TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+        TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         // Reset the bid information
         items[_tokenId].highestBidder = address(0);
         items[_tokenId].highestBid = 0;
@@ -197,7 +197,7 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(listing.canBid, "withdrawBid: You cannot bid on this token");
         require(listing.highestBidder == msg.sender, "withdrawBid: You are not the highest bidder");
 
-        TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+        TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         // Clear the bid
         items[_tokenId].highestBidder = address(0);
         items[_tokenId].highestBid = 0;
@@ -213,19 +213,19 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         require(listing.price == _price, "buyWithInstallment: Wrong price");
         require(listing.seller != address(0), "buyWithInstallment: Item not listed on the marketplace");
         require(listing.seller != msg.sender, "buyWithInstallment: You cannot buy a item that you listed");
-        require(TUSDCtoken.balanceOf(msg.sender) >= downPayment, "makePayment: Your tUSDC balance is insufficent");
+        require(TBUSDtoken.balanceOf(msg.sender) >= downPayment, "makePayment: Your tBUSD balance is insufficent");
 
         if (isTax) {
             uint256 amountToTaxReceiver = (downPayment * taxFees) / 100;
             uint256 amountToSeller = downPayment - amountToTaxReceiver;
-            TUSDCtoken.transferFrom(msg.sender, taxReceiver, amountToTaxReceiver);
-            TUSDCtoken.transferFrom(msg.sender, listing.seller, amountToSeller);
+            TBUSDtoken.transferFrom(msg.sender, taxReceiver, amountToTaxReceiver);
+            TBUSDtoken.transferFrom(msg.sender, listing.seller, amountToSeller);
         } else {
-            TUSDCtoken.transferFrom(msg.sender, listing.seller, downPayment);
+            TBUSDtoken.transferFrom(msg.sender, listing.seller, downPayment);
         }
 
         if (listing.highestBidder != address(0)) {
-            TUSDCtoken.transfer(listing.highestBidder, listing.highestBid);
+            TBUSDtoken.transfer(listing.highestBidder, listing.highestBid);
         }
 
         items[_tokenId].buyer = msg.sender;
@@ -244,12 +244,12 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         InstallmentData storage installmentInfo = installment[_tokenId];
         require(listing.buyer == msg.sender, "makePayment: This poperty is not yours");
         require(
-            TUSDCtoken.balanceOf(msg.sender) >= installmentInfo.monthlyAmount,
+            TBUSDtoken.balanceOf(msg.sender) >= installmentInfo.monthlyAmount,
             "makePayment: Your balance is insufficient"
         );
         require(installmentInfo.paymentDeadline >= block.timestamp, "makePayment: Deadline has passed");
 
-        TUSDCtoken.transferFrom(msg.sender, listing.seller, installmentInfo.monthlyAmount);
+        TBUSDtoken.transferFrom(msg.sender, listing.seller, installmentInfo.monthlyAmount);
         installment[_tokenId].paidAmount += installmentInfo.monthlyAmount;
         installment[_tokenId].remainingAmount -= installmentInfo.monthlyAmount;
         installment[_tokenId].paymentDeadline += 30 days;
@@ -297,9 +297,9 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         propertyNFT.transferFrom(address(this), to, _tokenId);
     }
 
-    // Withdraw USDC
-    function withdrawUSDC(address to, uint256 amount) external onlyOwner {
-        TUSDCtoken.transfer(to, amount);
+    // Withdraw BUSD
+    function withdrawBUSD(address to, uint256 amount) external onlyOwner {
+        TBUSDtoken.transfer(to, amount);
     }
 
     // Grant lister role
@@ -307,9 +307,9 @@ contract Marketplace is Ownable, ReentrancyGuard, Pausable, AccessControl, IERC7
         _grantRole(LISTER_ROLE, _minter);
     }
 
-    // Set USDC token
-    function setUSDC(IERC20 _token) external onlyOwner {
-        TUSDCtoken = IERC20(_token);
+    // Set BUSD token
+    function setBUSD(IERC20 _token) external onlyOwner {
+        TBUSDtoken = IERC20(_token);
     }
 
     // Set tax switch

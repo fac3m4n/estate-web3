@@ -516,7 +516,7 @@ const ListProperty: NextPage = () => {
               className="input input-bordered w-full pr-12"
               placeholder="Price"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50">tUSDC</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50">tBUSD</span>
           </div>
         </div>
 

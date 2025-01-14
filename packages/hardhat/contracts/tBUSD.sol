@@ -17,7 +17,7 @@ contract tBUSD is ERC20, Ownable, Pausable {
         _mint(msg.sender, 10000000 * 10 ** _decimals);
     }
 
-    // Override decimals function to match USDC's 6 decimals
+    // Override decimals function to match BUSD's 6 decimals
     function decimals() public view virtual override returns (uint8) {
         return _decimals;
     }
