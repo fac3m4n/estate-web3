@@ -8,32 +8,11 @@ import { Contract } from "ethers";
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployContracts: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployTbusd: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  const tbusdDeployment = await deploy("tBUSD", {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-  });
-
-  const propertyNFTDeployment = await deploy("PropertyNFT", {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-  });
-
-  const marketplaceDeployment = await deploy("Marketplace", {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-  });
-
-  const marketplaceFractionalDeployment = await deploy("MarketplaceFractional", {
+  await deploy("tBUSD", {
     from: deployer,
     args: [],
     log: true,
@@ -43,11 +22,8 @@ const deployContracts: DeployFunction = async function (hre: HardhatRuntimeEnvir
   // Get the deployed contract to interact with it after deploying.
   const tbusd = await hre.ethers.getContract<Contract>("tBUSD", deployer);
   console.log("👋 Initial balance:", await tbusd.balanceOf(deployer));
-  const propertyNFT = await hre.ethers.getContract<Contract>("PropertyNFT", deployer);
-  await propertyNFT.initialize();
-  await propertyNFT.set(tbusd.address);
 };
 
-export default deployContracts;
+export default deployTbusd;
 
-deployContracts.tags = ["tBUSD"];
+deployTbusd.tags = ["tBUSD"];
