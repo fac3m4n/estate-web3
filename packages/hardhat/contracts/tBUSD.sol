@@ -5,15 +5,15 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract tUSDC is ERC20, Ownable, Pausable {
-    uint8 private _decimals = 6; // USDC uses 6 decimals
+contract tBUSD is ERC20, Ownable, Pausable {
+    uint8 private _decimals = 18; // BUSD uses 18 decimals
 
     // Faucet configuration
-    uint256 public constant FAUCET_AMOUNT = 10000000 * 10 ** 6; // 1000000 USDC
+    uint256 public constant FAUCET_AMOUNT = 10000000 * 10 ** 18; // 10000000 BUSD
     uint256 public constant FAUCET_COOLDOWN = 24 hours;
     mapping(address => uint256) public lastFaucetRequest;
 
-    constructor() ERC20("Test USDC", "tUSDC") Ownable(msg.sender) {
+    constructor() ERC20("Test BUSD", "tBUSD") Ownable(msg.sender) {
         _mint(msg.sender, 10000000 * 10 ** _decimals);
     }
 

@@ -8,11 +8,11 @@ import { Contract } from "ethers";
  *
  * @param hre HardhatRuntimeEnvironment object.
  */
-const deployTusdc: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployContracts: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("tUSDC", {
+  await deploy("tBUSD", {
     from: deployer,
     args: [],
     log: true,
@@ -20,10 +20,10 @@ const deployTusdc: DeployFunction = async function (hre: HardhatRuntimeEnvironme
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const tusdc = await hre.ethers.getContract<Contract>("tUSDC", deployer);
-  console.log("👋 Initial balance:", await tusdc.balanceOf(deployer));
+  const tbusd = await hre.ethers.getContract<Contract>("tBUSD", deployer);
+  console.log("👋 Initial balance:", await tbusd.balanceOf(deployer));
 };
 
-export default deployTusdc;
+export default deployContracts;
 
-deployTusdc.tags = ["tUSDC"];
+deployContracts.tags = ["tBUSD"];
