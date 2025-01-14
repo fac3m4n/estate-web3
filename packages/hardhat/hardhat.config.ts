@@ -25,6 +25,7 @@ const etherscanApiKey = process.env.ETHERSCAN_MAINNET_API_KEY || "DNXJA8RX2Q3VZ4
 const etherscanOptimisticApiKey = process.env.ETHERSCAN_OPTIMISTIC_API_KEY || "RM62RDISS1RH448ZY379NX625ASG1N633R";
 const basescanApiKey = process.env.BASESCAN_API_KEY || "ZZZEIPMT1MNJ8526VV2Y744CA7TNZR64G6";
 const arbiscanApiKey = process.env.ARBSCAN_MAINNET_API_KEY || "ESV8V9D86HW1M3UWNAI6HZDCWERSXKQUAT";
+const bscscanApiKey = process.env.BSCSCAN_API_KEY || "ZZZEIPMT1MNJ8526VV2Y744CA7TNZR64G6";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -175,7 +176,7 @@ const config: HardhatUserConfig = {
       verify: {
         etherscan: {
           apiUrl: "https://api-testnet.bscscan.com",
-          apiKey: "JI5N1XM7GJUCB5EXSUX333JTDS4DTZMIUH",
+          apiKey: "",
         },
       },
     },
