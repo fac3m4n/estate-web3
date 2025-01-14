@@ -11,6 +11,7 @@ A decentralized real estate platform built on Binance Smart Chain that enables p
 - Collateralized Payments Support
 - Interactive Property Search
 - Secure Wallet Integration
+- Debug and Test Deployed Contracts
 
 ## Tech Stack 💻
 
@@ -27,3 +28,16 @@ A decentralized real estate platform built on Binance Smart Chain that enables p
 - **PropertyNFT.sol**: Represents a property as NFT and manages its ownership and transfer.
 - **Marketplace.sol**: Manages the buying and selling of properties, including the creation of listings, bidding, and settlement.
 - **MarketplaceFractional.sol**: Manages the fractional ownership of properties, including the creation of fractional listings, bidding, and settlement.
+
+## Requirements 📝
+
+- Node.js (>=v18.18)
+- Yarn (v1 or v2+)
+- Git
+
+## Installation 📥
+
+1. Clone the repository
+2. Run `yarn install` to install the dependencies
+3. Run `yarn deploy --network <network>` to deploy the contracts
+4. Run `yarn start` to start the development server
