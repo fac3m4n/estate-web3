@@ -23,7 +23,7 @@ A decentralized real estate platform built on Binance Smart Chain that enables p
 
 ## Contracts 📜
 
-- **tUSDC.sol**: Test BUSD token on Binance Smart Chain used for transactions on the platform
+- **tBUSD.sol**: Test BUSD token on Binance Smart Chain used for transactions on the platform
 - **PropertyNFT.sol**: Represents a property as NFT and manages its ownership and transfer.
 - **Marketplace.sol**: Manages the buying and selling of properties, including the creation of listings, bidding, and settlement.
 - **MarketplaceFractional.sol**: Manages the fractional ownership of properties, including the creation of fractional listings, bidding, and settlement.
