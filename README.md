@@ -2,6 +2,8 @@
 
 A decentralized real estate platform built on Binance Smart Chain that enables property listing, buying, and renting with cryptocurrency payments and smart contract integration.
 
+Landing inspiration: [Figma](https://www.figma.com/community/file/1159150161670385658/free-estatery-real-estate-saas-web-and-mobile-ui-kit)
+
 ## Features 🌟
 
 - Property Listing & Management
