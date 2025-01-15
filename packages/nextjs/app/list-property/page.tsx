@@ -1,16 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { NextPage } from "next";
 import { parseEther } from "viem";
+import { createPublicClient, http } from "viem";
+import { arbitrumSepolia, baseSepolia } from "viem/chains";
+import { useWatchContractEvent } from "wagmi";
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { useScaffoldWatchContractEvent, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import deployedContracts from "~~/contracts/deployedContracts";
+import {
+  useScaffoldEventHistory,
+  useScaffoldWatchContractEvent,
+  useScaffoldWriteContract,
+} from "~~/hooks/scaffold-eth";
 import { adminWalletClient } from "~~/services/adminWallet";
 import { geocodingService } from "~~/services/geocoding";
 import { pinataService } from "~~/services/piniata";
 import { notification } from "~~/utils/scaffold-eth";
+
+const publicClient = createPublicClient({
+  chain: arbitrumSepolia,
+  transport: http(),
+});
 
 export enum PropertyType {
   Apartment = 0,
@@ -46,6 +59,107 @@ const ListProperty: NextPage = () => {
   });
 
   const { writeContractAsync } = useScaffoldWriteContract({ contractName: "PropertyNFT" });
+  useEffect(() => {
+    const unwatch = publicClient.watchContractEvent({
+      address: deployedContracts[421614]["Marketplace"].address,
+      abi: deployedContracts[421614]["Marketplace"].abi,
+      eventName: "PropertyListed",
+      strict: true,
+      onLogs: async logs => {
+        const { seller, price, tokenId } = logs[0].args;
+        try {
+          const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
+          console.log("Current form state:", form);
+
+          // Get coordinates from address
+          const coordinates = await geocodingService.getCoordinates(form.location);
+          if (!coordinates) {
+            notification.error("Failed to get coordinates for the provided address");
+            return;
+          }
+
+          // Add coordinates to form data
+          const formWithCoordinates = {
+            ...form,
+            coordinates,
+          };
+
+          // Upload images to Pinata
+          console.log("Uploading images:", form.images);
+          const imageUrls = await pinataService.uploadImages(form.images);
+          console.log("Image URLs received:", imageUrls);
+
+          // Generate metadata
+          console.log("Generating metadata with:", { tokenId: tokenId?.toString(), formWithCoordinates, imageUrls });
+          const metadata = pinataService.generateMetadata(
+            tokenId?.toString() || "",
+            formWithCoordinates,
+            imageUrls,
+            seller,
+          );
+          console.log("Generated metadata:", metadata);
+
+          // Upload metadata to Pinata
+          console.log("Uploading metadata to Pinata...");
+          const tokenUri = await pinataService.uploadMetadata(tokenId?.toString() || "", metadata);
+          console.log("Token URI received:", tokenUri);
+
+          await writeContractAsync({
+            functionName: "setTokenURI",
+            args: [tokenId, tokenUri],
+            account: adminWalletClient.account,
+          });
+
+          // Save to MongoDB
+          console.log("Saving to MongoDB...");
+          const dbResponse = await fetch("/api/properties", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tokenId: tokenId?.toString(),
+              ...metadata,
+            }),
+          });
+
+          if (!dbResponse.ok) {
+            console.error("MongoDB save failed:", await dbResponse.json());
+            throw new Error("Failed to save property to database");
+          }
+
+          console.log("MongoDB save successful");
+          notification.remove(loadingToastId);
+          notification.success("Property metadata uploaded successfully!");
+          // reset form
+          // setForm({
+          //   propertyType: PropertyType.Apartment,
+          //   isShared: false,
+          //   canBid: false,
+          //   title: "",
+          //   rooms: 1,
+          //   bathrooms: 1,
+          //   usableSurface: 0,
+          //   price: 0,
+          //   location: "",
+          //   images: [],
+          // });
+
+          console.log("Token URI:", tokenUri);
+        } catch (error) {
+          console.error("Error uploading metadata:", error);
+          notification.error(
+            <>
+              <p className="font-bold mt-0 mb-1">Error uploading property metadata</p>
+              <p className="m-0">Please try again.</p>
+            </>,
+          );
+        }
+      },
+    });
+
+    return () => unwatch();
+  }, []);
 
   // useScaffoldWatchContractEvent({
   //   contractName: "MarketplaceFractional",
@@ -158,108 +272,6 @@ const ListProperty: NextPage = () => {
   //     });
   //   },
   // });
-
-  useScaffoldWatchContractEvent({
-    contractName: "Marketplace",
-    eventName: "PropertyListed",
-    onLogs: async logs => {
-      console.log("PropertyListed event received. Logs:", logs);
-
-      // logs.map(async log => {
-      //   const { seller, tokenId, price, canBid } = log.args;
-      //   console.log("PropertyListed details:", { seller, tokenId, price, canBid });
-
-      //   try {
-      //     const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
-      //     console.log("Current form state:", form);
-
-      //     // Get coordinates from address
-      //     const coordinates = await geocodingService.getCoordinates(form.location);
-      //     if (!coordinates) {
-      //       notification.error("Failed to get coordinates for the provided address");
-      //       return;
-      //     }
-
-      //     // Add coordinates to form data
-      //     const formWithCoordinates = {
-      //       ...form,
-      //       coordinates,
-      //     };
-
-      //     // Upload images to Pinata
-      //     console.log("Uploading images:", form.images);
-      //     const imageUrls = await pinataService.uploadImages(form.images);
-      //     console.log("Image URLs received:", imageUrls);
-
-      //     // Generate metadata
-      //     console.log("Generating metadata with:", { tokenId: tokenId?.toString(), formWithCoordinates, imageUrls });
-      //     const metadata = pinataService.generateMetadata(
-      //       tokenId?.toString() || "",
-      //       formWithCoordinates,
-      //       imageUrls,
-      //       seller,
-      //     );
-      //     console.log("Generated metadata:", metadata);
-
-      //     // Upload metadata to Pinata
-      //     console.log("Uploading metadata to Pinata...");
-      //     const tokenUri = await pinataService.uploadMetadata(tokenId?.toString() || "", metadata);
-      //     console.log("Token URI received:", tokenUri);
-
-      //     await writeContractAsync({
-      //       functionName: "setTokenURI",
-      //       args: [tokenId, tokenUri],
-      //       account: adminWalletClient.account,
-      //     });
-
-      //     // Save to MongoDB
-      //     console.log("Saving to MongoDB...");
-      //     const dbResponse = await fetch("/api/properties", {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         tokenId: tokenId?.toString(),
-      //         ...metadata,
-      //       }),
-      //     });
-
-      //     if (!dbResponse.ok) {
-      //       console.error("MongoDB save failed:", await dbResponse.json());
-      //       throw new Error("Failed to save property to database");
-      //     }
-
-      //     console.log("MongoDB save successful");
-      //     notification.remove(loadingToastId);
-      //     notification.success("Property metadata uploaded successfully!");
-      //     // reset form
-      //     setForm({
-      //       propertyType: PropertyType.Apartment,
-      //       isShared: false,
-      //       canBid: false,
-      //       title: "",
-      //       rooms: 1,
-      //       bathrooms: 1,
-      //       usableSurface: 0,
-      //       price: 0,
-      //       location: "",
-      //       images: [],
-      //     });
-
-      //     console.log("Token URI:", tokenUri);
-      //   } catch (error) {
-      //     console.error("Error uploading metadata:", error);
-      //     notification.error(
-      //       <>
-      //         <p className="font-bold mt-0 mb-1">Error uploading property metadata</p>
-      //         <p className="m-0">Please try again.</p>
-      //       </>,
-      //     );
-      //   }
-      // });
-    },
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
