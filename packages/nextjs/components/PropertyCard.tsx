@@ -63,7 +63,7 @@ export const PropertyCard = ({ property, onClick, isSelected }: PropertyCardProp
           height={1000}
           className="w-full h-full object-cover"
         />
-        <div className="absolute top-2 right-2 badge badge-primary text-lg font-bold">{price} tBUSD</div>
+        <div className="absolute top-2 right-2 badge badge-primary text-lg font-bold">{price} tUSD</div>
       </figure>
       <div className="card-body">
         <h2 className="card-title">{property.name}</h2>

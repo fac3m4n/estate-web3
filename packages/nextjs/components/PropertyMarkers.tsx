@@ -40,7 +40,7 @@ export function PropertyMarkers({ properties, selectedPropertyId, onMarkerClick 
             <InfoWindow>
               <div className="p-2">
                 <h3 className="font-bold">{property.title}</h3>
-                <p className="text-sm">${property.price.toLocaleString()} tBUSD</p>
+                <p className="text-sm">${property.price.toLocaleString()} tUSD</p>
               </div>
             </InfoWindow>
           )}

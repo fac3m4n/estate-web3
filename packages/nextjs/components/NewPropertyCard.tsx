@@ -41,7 +41,7 @@ export const NewPropertyCard = ({ id, title, location, bedrooms, bathrooms, size
         {/* Property Details */}
         <div className="p-6 space-y-4">
           {/* Price */}
-          <div className="text-4xl font-bold text-blue-400">{price} tBUSD</div>
+          <div className="text-4xl font-bold text-blue-400">{price} tUSD</div>
 
           {/* Property Name */}
           <h2 className="text-xl font-bold text-navy-900">{title}</h2>

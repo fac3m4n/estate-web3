@@ -5,19 +5,19 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract tBUSD is ERC20, Ownable, Pausable {
-    uint8 private _decimals = 18; // BUSD uses 18 decimals
+contract tUSD is ERC20, Ownable, Pausable {
+    uint8 private _decimals = 18; // USD uses 18 decimals
 
     // Faucet configuration
-    uint256 public constant FAUCET_AMOUNT = 10000000 * 10 ** 18; // 10000000 BUSD
+    uint256 public constant FAUCET_AMOUNT = 10000000 * 10 ** 18; // 10000000 USD
     uint256 public constant FAUCET_COOLDOWN = 24 hours;
     mapping(address => uint256) public lastFaucetRequest;
 
-    constructor() ERC20("Test BUSD", "tBUSD") Ownable(msg.sender) {
+    constructor() ERC20("Test USD", "tUSD") Ownable(msg.sender) {
         _mint(msg.sender, 10000000 * 10 ** _decimals);
     }
 
-    // Override decimals function to match BUSD's 6 decimals
+    // Override decimals function to match USD's 6 decimals
     function decimals() public view virtual override returns (uint8) {
         return _decimals;
     }

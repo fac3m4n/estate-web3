@@ -67,6 +67,8 @@ const ListProperty: NextPage = () => {
       strict: true,
       onLogs: async logs => {
         const { seller, price, tokenId } = logs[0].args;
+        console.log(form.images);
+
         try {
           const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
           console.log("Current form state:", form);
@@ -159,121 +161,11 @@ const ListProperty: NextPage = () => {
     });
 
     return () => unwatch();
-  }, []);
-
-  // useScaffoldWatchContractEvent({
-  //   contractName: "MarketplaceFractional",
-  //   eventName: "PropertyListed",
-  //   onLogs: async logs => {
-  //     console.log("PropertyListed event received. Logs:", logs);
-  //     logs.map(async log => {
-  //       const { lister, price, pricePerShare, propertyToken, tokenId } = log.args;
-  //       console.log("PropertyListed Fractional details:", {
-  //         lister,
-  //         price,
-  //         pricePerShare,
-  //         propertyToken,
-  //         tokenId,
-  //       });
-
-  //       try {
-  //         const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
-  //         console.log("Current form state:", form);
-
-  //         // Get coordinates from address
-  //         const coordinates = await geocodingService.getCoordinates(form.location);
-  //         if (!coordinates) {
-  //           notification.error("Failed to get coordinates for the provided address");
-  //           return;
-  //         }
-
-  //         // Add coordinates to form data
-  //         const formWithCoordinates = {
-  //           ...form,
-  //           coordinates,
-  //         };
-
-  //         // Upload images to Pinata
-  //         console.log("Uploading images:", form.images);
-  //         const imageUrls = await pinataService.uploadImages(form.images);
-  //         console.log("Image URLs received:", imageUrls);
-
-  //         // Generate metadata with coordinates
-  //         console.log("Generating metadata with:", {
-  //           tokenId: tokenId?.toString(),
-  //           formWithCoordinates,
-  //           imageUrls,
-  //           propertyToken: propertyToken?.toString(),
-  //         });
-
-  //         const metadata = pinataService.generateMetadata(
-  //           tokenId?.toString() || "",
-  //           formWithCoordinates,
-  //           imageUrls,
-  //           lister,
-  //           propertyToken?.toString(),
-  //         );
-  //         console.log("Generated metadata:", metadata);
-
-  //         // Upload metadata to Pinata
-  //         console.log("Uploading metadata to Pinata...");
-  //         const tokenUri = await pinataService.uploadMetadata(tokenId?.toString() || "", metadata);
-  //         console.log("Token URI received:", tokenUri);
-
-  //         await writeContractAsync({
-  //           functionName: "setTokenURI",
-  //           args: [tokenId, tokenUri],
-  //           account: adminWalletClient.account,
-  //         });
-
-  //         // Save to MongoDB
-  //         console.log("Saving to MongoDB...");
-  //         const dbResponse = await fetch("/api/properties", {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             tokenId: tokenId?.toString(),
-  //             ...metadata,
-  //           }),
-  //         });
-
-  //         if (!dbResponse.ok) {
-  //           console.error("MongoDB save failed:", await dbResponse.json());
-  //           throw new Error("Failed to save property to database");
-  //         }
-
-  //         console.log("MongoDB save successful");
-  //         notification.remove(loadingToastId);
-  //         notification.success("Property metadata uploaded successfully!");
-  //         // reset form
-  //         setForm({
-  //           propertyType: PropertyType.Apartment,
-  //           isShared: false,
-  //           canBid: false,
-  //           title: "",
-  //           rooms: 1,
-  //           bathrooms: 1,
-  //           usableSurface: 0,
-  //           price: 0,
-  //           location: "",
-  //           images: [],
-  //         });
-  //       } catch (error) {
-  //         console.error("Detailed error in property listing process:", error);
-  //         notification.error(
-  //           <>
-  //             <p className="font-bold mt-0 mb-1">Error uploading property metadata</p>
-  //             <p className="m-0">Please try again.</p>
-  //           </>,
-  //         );
-  //       }
-  //     });
-  //   },
-  // });
+  }, [form]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(form);
+
     e.preventDefault();
     try {
       if (form.isShared) {
@@ -528,7 +420,7 @@ const ListProperty: NextPage = () => {
               className="input input-bordered w-full pr-12"
               placeholder="Price"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50">tBUSD</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50">tUSD</span>
           </div>
         </div>
 

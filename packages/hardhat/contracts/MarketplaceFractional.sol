@@ -19,7 +19,7 @@ contract MarketplaceFractional is
 {
     uint256 public totalShare;
     IERC721 public propertyNFT;
-    IERC20 public TBUSDtoken; // BUSD token
+    IERC20 public TUSDtoken; // USD token
 
     bytes32 public constant LISTER_ROLE = keccak256("LISTER_ROLE");
 
@@ -47,7 +47,7 @@ contract MarketplaceFractional is
     function initialize() external initializer {
         _transferOwnership(_msgSender());
         totalShare = 1000;
-        TBUSDtoken = IERC20(0x77efF133ed48A27B04545F73A17348DA4fbDDf02);
+        TUSDtoken = IERC20(0x77efF133ed48A27B04545F73A17348DA4fbDDf02);
         _grantRole(DEFAULT_ADMIN_ROLE, owner());
         _grantRole(LISTER_ROLE, owner());
     }
@@ -83,10 +83,10 @@ contract MarketplaceFractional is
         require(listing.seller != address(0), "buyProperty: Item not listed on the marketplace");
         require(listing.seller != msg.sender, "buyProperty: You cannot buy a item that you listed");
         require(listing.sharesAvailable >= _shares, "Not enough shares available");
-        require(TBUSDtoken.balanceOf(msg.sender) >= listing.price, "buyProperty:  BUSD balance is insufficent");
+        require(TUSDtoken.balanceOf(msg.sender) >= listing.price, "buyProperty:  USD balance is insufficent");
 
         uint256 amounToPay = listing.pricePerShare * _shares;
-        require(TBUSDtoken.transferFrom(msg.sender, address(this), amounToPay), "Incorrect payment amount");
+        require(TUSDtoken.transferFrom(msg.sender, address(this), amounToPay), "Incorrect payment amount");
 
         // Transfer shares to the buyer
         Estate_Token(listing.propertyToken).transfer(msg.sender, _shares * 10 ** 18);
@@ -115,9 +115,9 @@ contract MarketplaceFractional is
         propertyNFT.transferFrom(address(this), to, _tokenId);
     }
 
-    // Withdraw BUSD
-    function withdrawBUSD(address to, uint256 amount) external onlyOwner {
-        TBUSDtoken.transfer(to, amount);
+    // Withdraw USD
+    function withdrawUSD(address to, uint256 amount) external onlyOwner {
+        TUSDtoken.transfer(to, amount);
     }
 
     // Withdraw token
@@ -131,13 +131,13 @@ contract MarketplaceFractional is
         return listing.price;
     }
 
-    // Set BUSD token
-    function setBUSDtoken(IERC20 _token) external onlyOwner {
-        TBUSDtoken = IERC20(_token);
+    // Set USD token
+    function setUSDtoken(IERC20 _token) external onlyOwner {
+        TUSDtoken = IERC20(_token);
     }
 
     // Set property NFT
-    function setPopertyNFT(address _nftAddress) external onlyOwner {
+    function setPropertyNFT(address _nftAddress) external onlyOwner {
         propertyNFT = IERC721(_nftAddress);
     }
 

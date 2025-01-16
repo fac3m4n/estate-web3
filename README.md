@@ -26,7 +26,7 @@ Landing inspiration: [Figma](https://www.figma.com/community/file/11591501616703
 
 ## Contracts 📜
 
-- **tBUSD.sol**: Test BUSD token on Binance Smart Chain used for transactions on the platform
+- **tUSD.sol**: Test USD token on Binance Smart Chain used for transactions on the platform
 - **PropertyNFT.sol**: Represents a property as NFT and manages its ownership and transfer.
 - **Marketplace.sol**: Manages the buying and selling of properties, including the creation of listings, bidding, and settlement.
 - **MarketplaceFractional.sol**: Manages the fractional ownership of properties, including the creation of fractional listings, bidding, and settlement.
