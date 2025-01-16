@@ -5,23 +5,20 @@ import Image from "next/image";
 import { NextPage } from "next";
 import { parseEther } from "viem";
 import { createPublicClient, http } from "viem";
-import { arbitrumSepolia, baseSepolia } from "viem/chains";
-import { useWatchContractEvent } from "wagmi";
 import { BuildingOffice2Icon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import deployedContracts from "~~/contracts/deployedContracts";
-import {
-  useScaffoldEventHistory,
-  useScaffoldWatchContractEvent,
-  useScaffoldWriteContract,
-} from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import scaffoldConfig from "~~/scaffold.config";
 import { adminWalletClient } from "~~/services/adminWallet";
 import { geocodingService } from "~~/services/geocoding";
 import { pinataService } from "~~/services/piniata";
 import { notification } from "~~/utils/scaffold-eth";
 
+const { targetNetworks } = scaffoldConfig;
+
 const publicClient = createPublicClient({
-  chain: arbitrumSepolia,
+  chain: targetNetworks[0],
   transport: http(),
 });
 
@@ -60,14 +57,13 @@ const ListProperty: NextPage = () => {
 
   const { writeContractAsync } = useScaffoldWriteContract({ contractName: "PropertyNFT" });
   useEffect(() => {
-    const unwatch = publicClient.watchContractEvent({
+    const unwatchMarketplace = publicClient.watchContractEvent({
       address: deployedContracts[421614]["Marketplace"].address,
       abi: deployedContracts[421614]["Marketplace"].abi,
       eventName: "PropertyListed",
       strict: true,
       onLogs: async logs => {
         const { seller, price, tokenId } = logs[0].args;
-        console.log(form.images);
 
         try {
           const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
@@ -160,7 +156,113 @@ const ListProperty: NextPage = () => {
       },
     });
 
-    return () => unwatch();
+    const unwatchMarketplaceFractional = publicClient.watchContractEvent({
+      address: deployedContracts[421614]["MarketplaceFractional"].address,
+      abi: deployedContracts[421614]["MarketplaceFractional"].abi,
+      eventName: "PropertyListed",
+      strict: true,
+      onLogs: async logs => {
+        const { lister, price, pricePerShare, propertyToken, tokenId } = logs[0].args;
+        try {
+          const loadingToastId = notification.loading("Uploading property metadata to IPFS...");
+          console.log("Current form state:", form);
+
+          // Get coordinates from address
+          const coordinates = await geocodingService.getCoordinates(form.location);
+          if (!coordinates) {
+            notification.error("Failed to get coordinates for the provided address");
+            return;
+          }
+
+          // Add coordinates to form data
+          const formWithCoordinates = {
+            ...form,
+            coordinates,
+          };
+
+          // Upload images to Pinata
+          console.log("Uploading images:", form.images);
+          const imageUrls = await pinataService.uploadImages(form.images);
+          console.log("Image URLs received:", imageUrls);
+
+          // Generate metadata with coordinates
+          console.log("Generating metadata with:", {
+            tokenId: tokenId?.toString(),
+            formWithCoordinates,
+            imageUrls,
+            propertyToken: propertyToken?.toString(),
+          });
+
+          const metadata = pinataService.generateMetadata(
+            tokenId?.toString() || "",
+            formWithCoordinates,
+            imageUrls,
+            lister,
+            propertyToken?.toString(),
+          );
+          console.log("Generated metadata:", metadata);
+
+          // Upload metadata to Pinata
+          console.log("Uploading metadata to Pinata...");
+          const tokenUri = await pinataService.uploadMetadata(tokenId?.toString() || "", metadata);
+          console.log("Token URI received:", tokenUri);
+
+          await writeContractAsync({
+            functionName: "setTokenURI",
+            args: [tokenId, tokenUri],
+            account: adminWalletClient.account,
+          });
+
+          // Save to MongoDB
+          console.log("Saving to MongoDB...");
+          const dbResponse = await fetch("/api/properties", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tokenId: tokenId?.toString(),
+              ...metadata,
+            }),
+          });
+
+          if (!dbResponse.ok) {
+            console.error("MongoDB save failed:", await dbResponse.json());
+            throw new Error("Failed to save property to database");
+          }
+
+          console.log("MongoDB save successful");
+          notification.remove(loadingToastId);
+          notification.success("Property metadata uploaded successfully!");
+          // reset form
+          // setForm({
+          //   propertyType: PropertyType.Apartment,
+          //   isShared: false,
+          //   canBid: false,
+          //   title: "",
+          //   rooms: 1,
+          //   bathrooms: 1,
+          //   usableSurface: 0,
+          //   price: 0,
+          //   location: "",
+          //   images: [],
+          // });
+        } catch (error) {
+          console.error("Detailed error in property listing process:", error);
+          notification.error(
+            <>
+              <p className="font-bold mt-0 mb-1">Error uploading property metadata</p>
+              <p className="m-0">Please try again.</p>
+            </>,
+          );
+        }
+      },
+    });
+
+    return () => {
+      unwatchMarketplace();
+      unwatchMarketplaceFractional();
+    };
   }, [form]);
 
   const handleSubmit = async (e: React.FormEvent) => {
