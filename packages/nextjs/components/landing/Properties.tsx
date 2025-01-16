@@ -20,6 +20,7 @@ interface Property {
     bathrooms: number;
     location: string;
     usableSurface: number;
+    propertyType: number;
   };
 }
 
@@ -59,6 +60,7 @@ export default function Properties() {
             bathrooms={property.properties.bathrooms}
             size={property.properties.usableSurface}
             imageUrl={property.image}
+            propertyType={Number(property.properties.propertyType)}
           />
         ))}
       </div>

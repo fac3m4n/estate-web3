@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useScaffoldReadContract } from "../hooks/scaffold-eth";
 import { Bath, BedSingle, Ruler } from "lucide-react";
+import { BuildingOffice2Icon, HomeIcon } from "@heroicons/react/24/outline";
 
 interface NewPropertyCardProps {
   id: string;
@@ -11,9 +12,19 @@ interface NewPropertyCardProps {
   bathrooms: number;
   size: number;
   imageUrl: string;
+  propertyType: number;
 }
 
-export const NewPropertyCard = ({ id, title, location, bedrooms, bathrooms, size, imageUrl }: NewPropertyCardProps) => {
+export const NewPropertyCard = ({
+  id,
+  title,
+  location,
+  bedrooms,
+  bathrooms,
+  size,
+  imageUrl,
+  propertyType,
+}: NewPropertyCardProps) => {
   const { data: getProperty } = useScaffoldReadContract({
     contractName: "Marketplace",
     functionName: "getMarketItem",
@@ -30,12 +41,20 @@ export const NewPropertyCard = ({ id, title, location, bedrooms, bathrooms, size
   if (price === "0") {
     price = (BigInt(getPropertyShared?.price || 0) / BigInt(10 ** 18)).toLocaleString();
   }
+
+  const PropertyTypeIcon = propertyType === 0 ? BuildingOffice2Icon : HomeIcon;
+
   return (
     <Link href={`/properties/${id}`}>
       <div className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         {/* Property Image */}
         <div className="relative h-64 w-full">
           <Image src={imageUrl} alt={title} width={1000} height={1000} className="w-full h-full object-cover" />
+          {/* Property Type Badge */}
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-2">
+            <PropertyTypeIcon className="h-5 w-5 text-blue-400" />
+            <span className="text-sm font-medium text-gray-700">{propertyType === 0 ? "Apartment" : "House"}</span>
+          </div>
         </div>
 
         {/* Property Details */}
