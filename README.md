@@ -1,6 +1,6 @@
 # Estate-web3 🏠
 
-A decentralized real estate platform built on Binance Smart Chain that enables property listing, buying, and renting with cryptocurrency payments and smart contract integration.
+A decentralized real estate platform built on Arbitrum Sepolia that enables property listing, buying, and renting with cryptocurrency payments and smart contract integration.
 
 Landing inspiration: [Figma](https://www.figma.com/community/file/1159150161670385658/free-estatery-real-estate-saas-web-and-mobile-ui-kit)
 
@@ -18,7 +18,7 @@ Landing inspiration: [Figma](https://www.figma.com/community/file/11591501616703
 ## Tech Stack 💻
 
 - **Frontend**: Next.js 14, TypeScript, TailwindCSS, DaisyUI, Google Maps API
-- **Blockchain**: Hardhat, Binance Smart Chain, Solidity
+- **Blockchain**: Hardhat, Arbitrum Sepolia, Solidity
 - **Web3 Integration**: Wagmi, Viem, RainbowKit
 - **File Storage**: Pinata IPFS
 - **Database**: MongoDB, Prisma
@@ -26,7 +26,7 @@ Landing inspiration: [Figma](https://www.figma.com/community/file/11591501616703
 
 ## Contracts 📜
 
-- **tUSD.sol**: Test USD token on Binance Smart Chain used for transactions on the platform
+- **tUSD.sol**: Test USD token on Arbitrum Sepolia used for transactions on the platform
 - **PropertyNFT.sol**: Represents a property as NFT and manages its ownership and transfer.
 - **Marketplace.sol**: Manages the buying and selling of properties, including the creation of listings, bidding, and settlement.
 - **MarketplaceFractional.sol**: Manages the fractional ownership of properties, including the creation of fractional listings, bidding, and settlement.
